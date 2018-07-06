@@ -5,3 +5,4 @@ A brief introduction to hardware description language using VHDL
  - BCD counter
  - Multiplex counter
  - Serial TX
+ - VGA Render
