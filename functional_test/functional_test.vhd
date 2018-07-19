@@ -198,10 +198,7 @@ architecture Behavioral of functional_test is
     signal conta : integer range 255 downto 0 := 0;
     signal transmite : std_logic;
     signal indice : integer range 7 downto 0 := 0;
-    --signal f : std_logic_vector (7 downto 0);
-    --signal t : std_logic_vector (7 downto 0);
-    --signal e : std_logic_vector (7 downto 0);
-    --signal c : std_logic_vector (7 downto 0);
+
     signal b : std_logic_vector (7 downto 0);
 
     signal p : std_logic_vector (7 downto 0);
