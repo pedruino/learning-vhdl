@@ -6,3 +6,4 @@ A brief introduction to hardware description language using VHDL
  - Multiplex counter
  - Serial TX
  - VGA Render
+ - Functional test
