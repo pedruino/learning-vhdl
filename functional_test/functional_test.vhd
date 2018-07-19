@@ -223,12 +223,12 @@ begin
         transmite <= '1';--serial
         divisor <= 0;
 
-        b <= "00100000";--32 eh o codigo do espaÃ§o na tabela ascii
+        b <= "00100000";--32 eh o codigo do espaço na tabela ascii
 
         p <= char_to_bin('p');
-        e <= char_to_bin('a');
-        d <= char_to_bin('u');
-        r <= char_to_bin('l');
+        e <= char_to_bin('e');
+        d <= char_to_bin('d');
+        r <= char_to_bin('r');
         o <= char_to_bin('o');
 		
         conta <= 0;
@@ -240,24 +240,24 @@ begin
         if sw_counter = '1' then
             memory_sw_counter <= '1';
             delay <= 0;            
-        elsif sw_counter = '0' and memory_sw_counter = '1' then --fim do pulso de clock	inicia delay de ruÃ­do da chave
+        elsif sw_counter = '0' and memory_sw_counter = '1' then --fim do pulso de clock	inicia delay de ruído da chave
             delay <= delay + 1;
 
-            if delay = 100000 then --final do delay de chave, aÃ§Ãµes a serem executadas no final do pulso de clock			   
-                memory_sw_counter <= '0'; --reset da memÃ³ria da chave
-                number <=  number + 1; --aÃ§Ã£o quando sw_counter foi acionada					
+            if delay = 100000 then --final do delay de chave, ações a serem executadas no final do pulso de clock			   
+                memory_sw_counter <= '0'; --reset da memória da chave
+                number <=  number + 1; --ação quando sw_counter foi acionada					
             end if;
 
     --Button LEDs
         elsif sw_led = '1' then
             memory_sw_led <= '1';
             delay <= 0; 
-        elsif sw_led = '0' and memory_sw_led = '1' then --fim do pulso de clock	inicia delay de ruÃ­do da chave
+        elsif sw_led = '0' and memory_sw_led = '1' then --fim do pulso de clock	inicia delay de ruído da chave
             delay <= delay + 1;
 
-            if delay = 100000 then --final do delay de chave, aÃ§Ãµes a serem executadas no final do pulso de clock
-                memory_sw_led <= '0';  --reset da memÃ³ria da chave
-                count_leds <=  count_leds + 1; --aÃ§Ã£o quando s2 foi acionada					
+            if delay = 100000 then --final do delay de chave, ações a serem executadas no final do pulso de clock
+                memory_sw_led <= '0';  --reset da memória da chave
+                count_leds <=  count_leds + 1; --ação quando s2 foi acionada					
             end if;
 
     --Button SERIAL
