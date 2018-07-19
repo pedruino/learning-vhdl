@@ -29,31 +29,31 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity functional_test is
     Port ( clock : in std_logic;
-           reset : in std_logic;
-           trigger : out std_logic_vector(3 downto 0);
-           display : out std_logic_vector(7 downto 0);
-           leds : out std_logic_vector(7 downto 0);
-           tx : out std_logic;
-           sw_serial : in std_logic;
-           sw_counter : in std_logic;
-           sw_led : in std_logic);
+            reset : in std_logic;
+            trigger : out std_logic_vector(3 downto 0);
+            display : out std_logic_vector(7 downto 0);
+            leds : out std_logic_vector(7 downto 0);
+            tx : out std_logic;
+            sw_serial : in std_logic;
+            sw_counter : in std_logic;
+            sw_led : in std_logic);
 end functional_test;
 
 architecture Behavioral of functional_test is
 
 --functions
     function decode(number: integer) return std_logic_vector is variable output: std_logic_vector (7 downto 0);
-		--display common anode
-		begin 
-			if number = 0 then output := "11000000";
-			elsif number = 1 then output := "11111001";
-			elsif number = 2 then output := "10100100";
-			elsif number = 3 then output := "10110000";
-			elsif number = 4 then output := "10011001";
-			elsif number = 5 then output := "10010010";
-			elsif number = 6 then output := "10000010";
-			elsif number = 7 then output := "11111000";
-			elsif number = 8 then output := "10000000";
+        --display common anode
+        begin 
+            if number = 0 then output := "11000000";
+            elsif number = 1 then output := "11111001";
+            elsif number = 2 then output := "10100100";
+            elsif number = 3 then output := "10110000";
+            elsif number = 4 then output := "10011001";
+            elsif number = 5 then output := "10010010";
+            elsif number = 6 then output := "10000010";
+            elsif number = 7 then output := "11111000";
+            elsif number = 8 then output := "10000000";
             elsif number = 9 then output := "10010000";
             elsif number = 10 then output := "10001000";
             elsif number = 11 then output := "10000011";
@@ -61,9 +61,9 @@ architecture Behavioral of functional_test is
             elsif number = 13 then output := "10100001";
             elsif number = 14 then output := "10000110";
             elsif number = 15 then output := "10001110";
-			else output := "11000000";            
-			end if;
-		return(output);
+            else output := "11000000";            
+            end if;
+        return(output);
 	end decode;
 
     function bit_serial (conta: integer; letra: std_logic_vector) return std_logic is
@@ -217,63 +217,63 @@ begin
 	
     if reset='1' then
         number <= 0;
-		delay <= 0;
-		memory_sw_counter <= '0';
-		memory_sw_led <= '0';
-		digit <= (others => '1');
+        delay <= 0;
+        memory_sw_counter <= '0';
+        memory_sw_led <= '0';
+        digit <= (others => '1');
         count_leds <= (others => '0');
-        --serial
-        transmite <= '1';
-		divisor <= 0;
 
-		b <= "00100000";--32 eh o codigo do espaço na tabela ascii
-		
+        transmite <= '1';--serial
+        divisor <= 0;
+
+        b <= "00100000";--32 eh o codigo do espaço na tabela ascii
+
         p <= char_to_bin('p');
-		e <= char_to_bin('a');
-		d <= char_to_bin('u');
-		r <= char_to_bin('l');
+        e <= char_to_bin('a');
+        d <= char_to_bin('u');
+        r <= char_to_bin('l');
         o <= char_to_bin('o');
 		
         conta <= 0;
-		indice <= 0;
+        indice <= 0;
 
 	elsif clock='1' and clock'event then
 
-        -- Button Counter
+    -- Button Counter
         if sw_counter = '1' then
-		    memory_sw_counter <= '1';
-		    delay <= 0;            
+            memory_sw_counter <= '1';
+            delay <= 0;            
         elsif sw_counter = '0' and memory_sw_counter = '1' then --fim do pulso de clock	inicia delay de ruído da chave
-		    delay <= delay + 1;
-            
-            if delay = 100000 then --final do delay de chave, ações a serem executadas no final do pulso de clock			   
-			    memory_sw_counter <= '0'; --reset da memória da chave
-			    number <=  number + 1; --ação quando sw_counter foi acionada					
-		    end if;
-        
-        --Button LEDs
-        elsif sw_led = '1' then
-		    memory_sw_led <= '1';
-		    delay <= 0; 
-        elsif sw_led = '0' and memory_sw_led = '1' then --fim do pulso de clock	inicia delay de ruído da chave
-		    delay <= delay + 1;
-            
-            if delay = 100000 then --final do delay de chave, ações a serem executadas no final do pulso de clock
-			    memory_sw_led <= '0';  --reset da memória da chave
-		 	    count_leds <=  count_leds + 1; --ação quando s2 foi acionada					
-		    end if;
+            delay <= delay + 1;
 
-        --Button SERIAL
+            if delay = 100000 then --final do delay de chave, ações a serem executadas no final do pulso de clock			   
+                memory_sw_counter <= '0'; --reset da memória da chave
+                number <=  number + 1; --ação quando sw_counter foi acionada					
+            end if;
+
+    --Button LEDs
+        elsif sw_led = '1' then
+            memory_sw_led <= '1';
+            delay <= 0; 
+        elsif sw_led = '0' and memory_sw_led = '1' then --fim do pulso de clock	inicia delay de ruído da chave
+            delay <= delay + 1;
+
+            if delay = 100000 then --final do delay de chave, ações a serem executadas no final do pulso de clock
+                memory_sw_led <= '0';  --reset da memória da chave
+                count_leds <=  count_leds + 1; --ação quando s2 foi acionada					
+            end if;
+
+    --Button SERIAL
         elsif sw_serial = '1' then
-		    --SERIAL
+
             if divisor = 5208 then --contou t = 1/9600 bps
                 divisor <= 0;			   
                 conta <= conta + 1;--incrementa indice de bits
-                
+
                 if conta = 255 then--11 a 255 estado de idle 
                     conta <= 0;			
                     indice <= indice + 1;		
-                    
+
                     if indice = 5 then 
                         indice <= 0;
                     end if;
